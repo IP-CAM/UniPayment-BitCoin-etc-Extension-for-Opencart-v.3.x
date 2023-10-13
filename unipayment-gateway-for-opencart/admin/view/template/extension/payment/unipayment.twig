@@ -1,0 +1,204 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+ 
+  <div class="page-header">
+	<div class="container-fluid">
+	  <div class="pull-right">
+		<button type="submit" form="form-unipayment" data-toggle="tooltip" title="{{button_save}}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+		<a href="{{cancel}}" data-toggle="tooltip" title="{{button_cancel}}" class="btn btn-default"><i class="fa fa-reply"></i></a> </div>
+	  <h1>{{heading_title}}</h1>
+	  <ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+	  </ul>
+	</div>
+  </div>
+  <div class="container-fluid">
+	{% if error_warning %}
+		<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+	{% endif %}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-pencil"></i>{{heading_title}}</h3>
+	  </div>
+	  <div class="panel-body">
+		<form action="{{action}}" method="post" enctype="multipart/form-data" id="form-unipayment" class="form-horizontal">
+		  <ul class="nav nav-tabs">						
+			<li class="active"><a href="#tab-general" data-toggle="tab">{{fieldset_unipayment_module}}</a></li>			
+		  </ul>
+		  <div class="tab-content">
+			
+			<div class="tab-pane active" id="tab-general">
+			
+			 <div class="form-group">
+				<label class="col-sm-2 control-label" for="input-status">{{entry_unipayment_status}}</label>
+				<div class="col-sm-10">
+                <select name="payment_unipayment_status" id="input-status" class="form-control">
+                  {% if payment_unipayment_status %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                  {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% endif %}
+                </select>							
+
+				</div>
+			  </div>
+			  
+			  
+			  <div class="form-group required">
+				<label class="col-sm-2 control-label" for="unipayment_client_id"><span data-toggle="tooltip" title="{{help_client_id}}">{{entry_client_id}}</span></label>
+				<div class="col-sm-10">
+				  <input type="text" name="payment_unipayment_client_id" value="{{payment_unipayment_client_id}}" placeholder="{{help_client_id}}" id="client_id" class="form-control" />
+				  {% if error_client_id %}
+					  <div class="text-danger">{{error_client_id}}</div>
+				  {% endif %}
+				</div>
+			  </div>              
+			  
+			  
+			  <div class="form-group required">
+				<label class="col-sm-2 control-label" for="unipayment_client_secret"><span data-toggle="tooltip" title="{{help_client_secret}}">{{entry_client_secret}}</span></label>
+				<div class="col-sm-10">
+				  <input type="text" name="payment_unipayment_client_secret" value="{{payment_unipayment_client_secret}}" placeholder="{{help_client_secret}}" id="client_secret" class="form-control" />
+				  {% if error_client_secret %}
+					  <div class="text-danger">{{error_client_secret}}</div>
+				  {% endif %}
+				</div>                
+			  </div>
+			  
+			  <div class="form-group required">
+				<label class="col-sm-2 control-label" for="unipayment_app_id"><span data-toggle="tooltip" title="{{help_app_id}}">{{entry_app_id}}</span></label>
+				<div class="col-sm-10">
+				  <input type="text" name="payment_unipayment_app_id" value="{{payment_unipayment_app_id}}" placeholder="{{help_app_id}}" id="app_id" class="form-control" />
+				  {% if error_app_id %}
+					  <div class="text-danger">{{error_app_id}}</div>
+				  {% endif %}
+				</div>                
+			  </div>
+			  
+			  <div class="form-group required">
+				<label class="col-sm-2 control-label" for="confirm_speed"><span data-toggle="tooltip" title="{{help_confirm_speed}}">{{entry_confirm_speed}}</span></label>
+				<div class="col-sm-10">    
+				<select name="payment_unipayment_confirm_speed" id="confirm_speed" class="form-control">								
+                  {% for confirm_speed in confirm_speeds %}
+                  {% if confirm_speed.id == payment_unipayment_confirm_speed %}
+                  <option value="{{ confirm_speed.id }}" selected="selected">{{ confirm_speed.name }}</option>
+                  {% else %}
+                  <option value="{{ confirm_speed.id }}">{{ confirm_speed.name }}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+				</div>
+			  </div>
+			  
+			  <div class="form-group required">
+				<label class="col-sm-2 control-label" for="pay_currency"><span data-toggle="tooltip" title="{{help_pay_currency}}">{{entry_pay_currency}}</span></label>
+				<div class="col-sm-10">    
+				<select name="payment_unipayment_pay_currency" id="pay_currency" class="form-control">				
+                  {% for pay_currency in pay_currencies %}
+                  {% if pay_currency.id == payment_unipayment_pay_currency %}
+                  <option value="{{ pay_currency.code }}" selected="selected">{{ pay_currency.name }}</option>
+                  {% else %}
+                  <option value="{{ pay_currency.code }}">{{ pay_currency.name }}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+				</div>
+			  </div>
+			  
+			
+
+  				<div class="form-group required">
+				<label class="col-sm-2 control-label" for="processing_status"><span data-toggle="tooltip" title="{{help_processing_status}}">{{entry_processing_status}}</span></label>
+					
+				<div class="col-sm-10">                  
+				<select name="payment_unipayment_processing_status" id="processing_status" class="form-control">						
+                  {% for processing_status in processing_statuses %}
+                  {% if processing_status.name == payment_unipayment_processing_status %}
+                  <option value="{{ processing_status.name }}" selected="selected">{{ processing_status.name }}</option>
+                  {% else %}
+                  <option value="{{ processing_status.name }}">{{ processing_status.name }}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+				</div>
+			  </div>
+			  
+			  	<div class="form-group required">
+				<label class="col-sm-2 control-label" for="handle_expired_status"><span data-toggle="tooltip" title="{{help_handle_expired_status}}">{{entry_handle_expired_status}}</span></label>
+				<div class="col-sm-10">
+				  <select name="payment_unipayment_handle_expired_status" id="handle_expired_status" class="form-control">
+					{% if payment_unipayment_handle_expired_status %}
+						<option value="1" selected="selected">{{text_yes}}</option>
+						<option value="0">{{text_no}}</option>
+					{% else %}
+						<option value="1">{{text_yes}}</option>
+						<option value="0" selected="selected">{{text_no}}</option>
+					{% endif %}
+				  </select>
+				</div>
+			  </div>
+			  
+
+			  <div class="form-group required">
+				<label class="col-sm-2 control-label" for="environment"><span data-toggle="tooltip" title="{{help_environment}}">{{entry_environment}}</span></label>
+				<div class="col-sm-10">
+				  <select name="payment_unipayment_environment" id="environment" class="form-control">
+					{% if payment_unipayment_environment == 'live' %}
+						<option value="live" selected="selected">{{text_live}}</option>
+						<option value="test">{{text_test}}</option>
+					{% else %}
+						<option value="live">{{text_live}}</option>
+						<option value="test" selected="selected">{{text_test}}</option>
+					{% endif %}
+				  </select>
+				</div>
+			  </div>
+			  
+			
+
+			  <div class="form-group required">
+				<label class="col-sm-2 control-label" for="unipayment_method_name">{{entry_method_name}}</label>
+				<div class="col-sm-10">
+				  <input type="text" name="payment_unipayment_method_name" value="{{payment_unipayment_method_name}}" placeholder="{{help_method_name}}" id="unipayment_method_name" class="form-control" />
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label class="col-sm-2 control-label" for="unipayment_sort_order">{{entry_sort_order}}</label>
+				<div class="col-sm-10">
+				  <input type="text" name="payment_unipayment_sort_order" value="{{payment_unipayment_sort_order}}" placeholder="{{help_sort_order}}" id="unipayment_sort_order" class="form-control" />
+				</div>
+			  </div>
+			  
+			  <div class="form-group">
+				<label class="col-sm-2 control-label" for="geo_zone_id">{{entry_geo_zone}}</label>
+				<div class="col-sm-10">
+				<select name="geo_zone_id" id="geo_zone_id" class="form-control">				
+                  <option value="0">{{ text_all_zones }}</option>
+                  {% for geo_zone in geo_zones %}
+                  {% if geo_zone.geo_zone_id == payment_unipayment_geo_zone_id %}
+                  <option value="{{ geo_zone.geo_zone_id }}" selected="selected">{{ geo_zone.name }}</option>
+                  {% else %}
+                  <option value="{{ geo_zone.geo_zone_id }}">{{ geo_zone.name }}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+				</div>
+			  </div>
+			 
+			</div>
+			
+			
+		  </div>
+		</form>
+	  </div>
+	</div>
+  </div>
+</div>
+{{ footer }}
